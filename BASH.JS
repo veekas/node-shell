@@ -2,6 +2,8 @@
 // console.log(Object.keys(process));
 // console.log(process.__dirname);
 // console.log(__dirname);
+var commands = require('./commands.js');
+// var fs = require('fs');
 
 process.stdout.write('prompt > ');
 process.stdin.on('data', function (data) {
@@ -9,9 +11,8 @@ process.stdin.on('data', function (data) {
   // console.log('process.stdin: ', process.stdin.onread);
   // console.log('process.stdin: ', process.stdin.onwrite);
   var cmd = data.toString().trim();
-  if (cmd === 'pwd') {
-    process.stdout.write(__dirname);
-  } else if (cmd === 'date') {
+  commands[cmd](cmd);
+  if (cmd === 'date') {
     now = new Date().toString();
     process.stdout.write(now);
   }
