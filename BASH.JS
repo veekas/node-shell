@@ -10,13 +10,18 @@ process.stdin.on('data', function (data) {
   // console.log('data: ', typeof data, data);
   // console.log('process.stdin: ', process.stdin.onread);
   // console.log('process.stdin: ', process.stdin.onwrite);
-  var cmd = data.toString().trim();
-  commands[cmd](cmd);
-  if (cmd === 'date') {
-    now = new Date().toString();
-    process.stdout.write(now);
+  var input = data.toString().trim();
+  var args, cmd = null;
+  if (input.indexOf(' ') >= 0) {
+    args = input.slice(input.indexOf(' ') + 1);
+    cmd = input.slice(0, input.indexOf(' '));
+  } else {
+    cmd = input;
   }
-  else process.stdout.write('You typed: ' + cmd);
+  if (commands[cmd]) {
+    commands[cmd](args);
+  } else {
+    process.stdout.write('You typed: ' + cmd);
+  }
   process.stdout.write('\nprompt > ');
 });
-
